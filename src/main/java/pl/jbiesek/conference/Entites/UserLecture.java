@@ -31,6 +31,11 @@ public class UserLecture {
     @JsonIgnore
     private Lecture lecture;
 
+    public UserLecture(User user, Lecture lecture) {
+        this.user = user;
+        this.lecture = lecture;
+    }
+
     public int getId() {
         return id;
     }

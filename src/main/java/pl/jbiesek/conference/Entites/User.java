@@ -39,6 +39,11 @@ public class User {
     @JsonIgnore
     private List<UserLecture> userLectures = new ArrayList<>();
 
+    public User(String login, String email) {
+        this.login = login;
+        this.email = email;
+    }
+
     public int getId() {
         return id;
     }

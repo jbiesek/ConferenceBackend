@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,13 @@ public class Lecture {
     private String theme;
 
     @Column(name="date")
-    private Date date;
+    private ZonedDateTime date;
+
+    public Lecture(String title, String theme, ZonedDateTime date) {
+        this.title = title;
+        this.theme = theme;
+        this.date = date;
+    }
 
     @OneToMany(
             mappedBy = "lecture",
@@ -66,11 +73,11 @@ public class Lecture {
         this.theme = theme;
     }
 
-    public Date getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 
