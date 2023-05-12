@@ -30,4 +30,28 @@ public class UserLecture {
     @JoinColumn(name = "lecture_id", nullable = false, foreignKey = @ForeignKey(name = "Fk_lecture"))
     @JsonIgnore
     private Lecture lecture;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Lecture getLecture() {
+        return lecture;
+    }
+
+    public void setLecture(Lecture lecture) {
+        this.lecture = lecture;
+    }
 }

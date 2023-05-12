@@ -25,6 +25,9 @@ public class Lecture {
     @Column(name = "id", updatable = false, unique = true, nullable = false)
     private int id;
 
+    @Column(name="title")
+    private String title;
+
     @Column(name="theme")
     private String theme;
 
@@ -38,4 +41,44 @@ public class Lecture {
     )
     @JsonIgnore
     private List<UserLecture> userLectures = new ArrayList<>();
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public List<UserLecture> getUserLectures() {
+        return userLectures;
+    }
+
+    public void setUserLectures(List<UserLecture> userLectures) {
+        this.userLectures = userLectures;
+    }
 }
