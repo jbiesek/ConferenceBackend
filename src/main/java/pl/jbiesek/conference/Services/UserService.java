@@ -10,7 +10,7 @@ public interface UserService {
 
     public User getById(int id);
 
-    public Boolean add(User user);
+    public int add(User user);
 
     public Boolean update(int id, User updatedUser);
 

@@ -28,12 +28,20 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public Boolean add(User user) {
+    public int add(User user) {
         if (user.getEmail()!=null && user.getLogin()!=null) {
-            userRepository.save(user);
-            return true;
+            if (userRepository.getUserByLogin(user.getLogin()).isPresent()) {
+                if (userRepository.getUserByLoginAndEmail(user.getLogin(), user.getEmail()).isPresent()) {
+                    return 2;
+                } else {
+                    return 3;
+                }
+            } else {
+                userRepository.save(user);
+                return 0;
+            }
         } else {
-            return false;
+            return 1;
         }
     }
 

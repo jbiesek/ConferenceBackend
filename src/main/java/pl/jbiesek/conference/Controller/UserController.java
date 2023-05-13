@@ -27,11 +27,16 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<Void> add(@RequestBody User user) {
-        if (userService.add(user)) {
+    public ResponseEntity<String> add(@RequestBody User user) {
+        int userServiceResponse = userService.add(user);
+        if (userServiceResponse==0) {
             return new ResponseEntity<>(HttpStatus.CREATED);
+        } else if (userServiceResponse == 1) {
+            return new ResponseEntity<>("Wpisano błędne dane",HttpStatus.FORBIDDEN);
+        } else if (userServiceResponse == 2) {
+            return new ResponseEntity<>("Podany login jest już zajęty.", HttpStatus.FORBIDDEN);
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("W bazie istnieje użytkownik o podanym loginie i e-mailu.", HttpStatus.FORBIDDEN);
         }
     }
 

@@ -11,7 +11,9 @@ public interface UserLectureService {
 
     public Boolean add(UserLecture userLecture);
 
-    public Boolean signUserIntoLecture(int lecture_id, String login, String email);
+    public int signUserIntoLecture(int lecture_id, String login, String email);
 
     public List<Lecture> getLecturesByLogin(String login);
+
+    public int cancelReservation(String login, int lecture_id);
 }

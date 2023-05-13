@@ -42,21 +42,28 @@ public class UserLectureServiceImplement implements UserLectureService {
     }
 
     @Override
-    public Boolean signUserIntoLecture(int lecture_id, String login, String email) {
-        if(userLectureRepository.countUsersByLectureId(lecture_id) < 5) {
-            Optional<User> userOptional = userRepository.getUserByLoginAndEmail(login, email);
-            Optional<Lecture> lectureOptional = lectureRepository.findById(lecture_id);
-            if (userOptional.isPresent() && lectureOptional.isPresent()) {
-                User user = userOptional.get();
-                Lecture lecture = lectureOptional.get();
-                System.out.println(checkForUserAndLecture(user.getId(), lecture_id));
-                if (!checkForUserAndLecture(user.getId(), lecture_id)) {
-                    userLectureRepository.save(new UserLecture(user, lecture));
-                    return true;
+    public int signUserIntoLecture(int lecture_id, String login, String email) {
+        if(lectureRepository.findById(lecture_id).isPresent()) {
+            if (userLectureRepository.countUsersByLectureId(lecture_id) < 5) {
+                Optional<User> userOptional = userRepository.getUserByLoginAndEmail(login, email);
+                Lecture lecture = lectureRepository.findById(lecture_id).get();
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    if (!checkForUserAndLecture(user.getId(), lecture_id)) {
+                        userLectureRepository.save(new UserLecture(user, lecture));
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                } else {
+                    return 2;
                 }
+            } else {
+                return 3;
             }
+        } else {
+            return 4;
         }
-        return false;
     }
 
     @Override
@@ -67,5 +74,27 @@ public class UserLectureServiceImplement implements UserLectureService {
             return lectureRepository.getLecturesByUserId(user_id);
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public int cancelReservation(String login, int lecture_id) {
+        Optional<User> userOptional = userRepository.getUserByLogin(login);
+        if(userOptional.isPresent()) {
+            Optional<Lecture> lectureOptional = lectureRepository.findById(lecture_id);
+            if(lectureOptional.isPresent()){
+                int user_id = userOptional.get().getId();
+                if(!checkForUserAndLecture(user_id, lecture_id)) {
+                    UserLecture userLecture = userLectureRepository.getByUserAndLecture(user_id, lecture_id);
+                    userLectureRepository.deleteById(userLecture.getId());
+                    return 0;
+                } else {
+                    return 1;
+                }
+            } else {
+                return 2;
+            }
+        } else {
+            return 3;
+        }
     }
 }
