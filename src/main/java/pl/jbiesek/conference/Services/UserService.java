@@ -1,5 +1,6 @@
 package pl.jbiesek.conference.Services;
 
+import pl.jbiesek.conference.Dto.UpdateEmailDto;
 import pl.jbiesek.conference.Entites.User;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface UserService {
     public Boolean update(int id, User updatedUser);
 
     public Boolean delete(int id);
+
+    public int updateEmail(UpdateEmailDto updateEmailDto);
 }

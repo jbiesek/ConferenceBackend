@@ -10,6 +10,7 @@ import pl.jbiesek.conference.Entites.User;
 import pl.jbiesek.conference.Services.LectureService;
 import pl.jbiesek.conference.Services.UserLectureService;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,7 +26,7 @@ public class LectureController {
     @Autowired
     UserLectureService userLectureService;
 
-    @GetMapping("/lectures")
+    @GetMapping("/lectures/sortByDate")
     public List<Lecture> getAll() {
         List<Lecture> lectures = lectureService.getAll();
         lectures.sort(Comparator.comparing(Lecture::getDate));
@@ -42,6 +43,13 @@ public class LectureController {
     @GetMapping("/lecture/{id}")
     public Lecture getById(@PathVariable("id") int id) {
         return lectureService.getById(id);
+    }
+
+    @GetMapping("/lectures/byLogin")
+    public List<Lecture> getLecturesByLogin(@RequestBody String login) {
+        List<Lecture> lectures = userLectureService.getLecturesByLogin(login);
+        lectures.sort(Comparator.comparing(Lecture::getDate));
+        return lectures;
     }
 
     @PostMapping("/lecture")
@@ -72,24 +80,21 @@ public class LectureController {
     }
 
     @PostMapping("/lecture/signIn/{lecture_id}")
-    public ResponseEntity<String> signIn (@PathVariable("lecture_id") int lecture_id, @RequestBody User user) {
+    public ResponseEntity<String> signIn (@PathVariable("lecture_id") int lecture_id, @RequestBody User user) throws IOException {
         int serviceResponse = userLectureService.signUserIntoLecture(lecture_id, user.getLogin(), user.getEmail());
         if(serviceResponse == 0) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else if (serviceResponse == 1) {
-            return new ResponseEntity<>("Podany użytkownik jest już zapisany na podaną prelekcję.",HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Podany użytkownik jest już zapisany na inną prelekcję o tej samej godzinie.",HttpStatus.FORBIDDEN);
         } else if (serviceResponse == 2) {
-            return new ResponseEntity<>("Podany użytkownik nie istnieje.", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Podany użytkownik jest już zapisany na podaną prelekcję.",HttpStatus.FORBIDDEN);
         } else if (serviceResponse == 3) {
+            return new ResponseEntity<>("Podany użytkownik nie istnieje.", HttpStatus.FORBIDDEN);
+        } else if (serviceResponse == 4) {
             return new ResponseEntity<>("Na podaną prelekcję zapisana jest maksymalna ilość osób.", HttpStatus.FORBIDDEN);
         } else {
             return new ResponseEntity<>("Podana prelekcja nie istnieje.", HttpStatus.FORBIDDEN);
         }
-    }
-
-    @GetMapping("/lectures/byLogin")
-    public List<Lecture> getLecturesByLogin(@RequestBody String login) {
-        return userLectureService.getLecturesByLogin(login);
     }
 
     @PostMapping("/lecture/cancelReservation/{lecture_id}")

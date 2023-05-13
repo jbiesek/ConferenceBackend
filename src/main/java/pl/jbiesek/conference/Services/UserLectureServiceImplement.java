@@ -9,7 +9,12 @@ import pl.jbiesek.conference.Respositories.LectureRepository;
 import pl.jbiesek.conference.Respositories.UserLectureRepository;
 import pl.jbiesek.conference.Respositories.UserRepository;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,27 +47,43 @@ public class UserLectureServiceImplement implements UserLectureService {
     }
 
     @Override
-    public int signUserIntoLecture(int lecture_id, String login, String email) {
+    public int signUserIntoLecture(int lecture_id, String login, String email) throws IOException {
         if(lectureRepository.findById(lecture_id).isPresent()) {
             if (userLectureRepository.countUsersByLectureId(lecture_id) < 5) {
                 Optional<User> userOptional = userRepository.getUserByLoginAndEmail(login, email);
                 Lecture lecture = lectureRepository.findById(lecture_id).get();
                 if (userOptional.isPresent()) {
                     User user = userOptional.get();
-                    if (!checkForUserAndLecture(user.getId(), lecture_id)) {
+                    if (checkForUserAndLecture(user.getId(), lecture_id)) {
+                        List<Lecture> userLectures = lectureRepository.getLecturesByUserId(user.getId());
+                        for(Lecture l : userLectures) {
+                            if(l.getDate().equals(lecture.getDate())){
+                                return 1;
+                            }
+                        }
                         userLectureRepository.save(new UserLecture(user, lecture));
+                        FileWriter fileWriter = new FileWriter("powiadomienia.txt",true);
+                        Date date = new Date();
+                        fileWriter.write("Data: " + date + "\n");
+                        fileWriter.write("Wiadomość do: " + user.getEmail() + "\n\n");
+                        fileWriter.write("Cześć " + user.getLogin() + "!\n\n" + "Zarejestrowałeś/łaś się na prelekcję pt. "
+                                + lecture.getTitle() + " ze ścieżki tematycznej " + lecture.getTheme()
+                                + ". Prelekcja odbędzie się dnia " + DateTimeFormatter.ofPattern("dd.MM.yyyy ").format(lecture.getDate())
+                                + "o godzinie " + DateTimeFormatter.ofPattern("HH:mm").format(lecture.getDate())
+                                + ".\n\n" + "Pozdrawiamy,\n" + "Organizatorzy" + "\n\n---------------------------\n\n");
+                        fileWriter.close();
                         return 0;
                     } else {
-                        return 1;
+                        return 2;
                     }
                 } else {
-                    return 2;
+                    return 3;
                 }
             } else {
-                return 3;
+                return 4;
             }
         } else {
-            return 4;
+            return 5;
         }
     }
 

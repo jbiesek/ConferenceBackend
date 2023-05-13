@@ -1,0 +1,60 @@
+Data: Sat May 13 12:59:25 CEST 2023
+Wiadomość do: stefan_siarzewski@gmail.com
+
+Cześć Stefan!
+
+Zarejestrowałeś/łaś się na prelekcję pt. Zaawansowany Spring Boot ze ścieżki tematycznej Backend. Prelekcja odbędzie się dnia 01.06.2023 o godzinie 12:00.
+
+Pozdrawiamy,
+Organizatorzy
+
+---------------------------
+
+Data: Sat May 13 13:00:22 CEST 2023
+Wiadomość do: michal_wisniewski@gmail.com
+
+Cześć Michal!
+
+Zarejestrowałeś/łaś się na prelekcję pt. Linux dla początkujących ze ścieżki tematycznej DevOps. Prelekcja odbędzie się dnia 01.06.2023 o godzinie 14:00.
+
+Pozdrawiamy,
+Organizatorzy
+
+---------------------------
+
+Data: Sat May 13 13:00:57 CEST 2023
+Wiadomość do: weronika_borkowska@gmail.com
+
+Cześć Weronika!
+
+Zarejestrowałeś/łaś się na prelekcję pt. Zaawansowany Spring Boot ze ścieżki tematycznej Backend. Prelekcja odbędzie się dnia 01.06.2023 o godzinie 12:00.
+
+Pozdrawiamy,
+Organizatorzy
+
+---------------------------
+
+Data: Sat May 13 13:01:46 CEST 2023
+Wiadomość do: alicja_domagala@gmail.com
+
+Cześć Alicja!
+
+Zarejestrowałeś/łaś się na prelekcję pt. Wstęp do AWS ze ścieżki tematycznej DevOps. Prelekcja odbędzie się dnia 01.06.2023 o godzinie 12:00.
+
+Pozdrawiamy,
+Organizatorzy
+
+---------------------------
+
+Data: Sat May 13 13:04:33 CEST 2023
+Wiadomość do: alicja_domagala@gmail.com
+
+Cześć Alicja!
+
+Zarejestrowałeś/łaś się na prelekcję pt. Dobre praktyki w Javie ze ścieżki tematycznej Backend. Prelekcja odbędzie się dnia 01.06.2023 o godzinie 14:00.
+
+Pozdrawiamy,
+Organizatorzy
+
+---------------------------
+
