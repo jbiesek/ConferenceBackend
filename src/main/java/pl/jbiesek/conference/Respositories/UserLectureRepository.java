@@ -15,4 +15,10 @@ public interface UserLectureRepository extends JpaRepository<UserLecture, Intege
     @Query(value = "select * from _user_lecture where user_id=:user_id and lecture_id=:lecture_id", nativeQuery = true)
     UserLecture getByUserAndLecture(int user_id, int lecture_id);
 
+    @Query(value = "select count(*) from _user_lecture", nativeQuery = true)
+    int countUserLectures();
+
+    @Query(value = "select COUNT(*) from _user_lecture ul join _lecture l on ul.lecture_id = l.id where l.theme=:theme", nativeQuery = true)
+    int countUserLecturesByTheme(String theme);
+
 }

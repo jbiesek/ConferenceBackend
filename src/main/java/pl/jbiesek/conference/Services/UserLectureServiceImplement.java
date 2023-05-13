@@ -13,10 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserLectureServiceImplement implements UserLectureService {
@@ -117,5 +114,39 @@ public class UserLectureServiceImplement implements UserLectureService {
         } else {
             return 3;
         }
+    }
+
+    public String generateLectureReport() throws IOException {
+        List<Lecture> lectures = lectureRepository.findAll();
+        int numberOfReservations = userLectureRepository.countUserLectures();
+        String report = "";
+        FileWriter fileWriter = new FileWriter("raport_prelekcje.txt");
+        for(Lecture lecture : lectures){
+            int numberOfUsers = userLectureRepository.countUsersByLectureId(lecture.getId());
+            float percentage = ((float) numberOfUsers /numberOfReservations)*100;
+            report += (lecture.getTitle() + ": " + percentage +"%\n");
+        }
+        fileWriter.write(report);
+        fileWriter.close();
+        return report;
+    }
+
+    public String generateLectureReportByTheme() throws IOException {
+        List<Lecture> lectures = lectureRepository.findAll();
+        int numberOfReservations = userLectureRepository.countUserLectures();
+        String report = "";
+        FileWriter fileWriter = new FileWriter("raport_sciezki_tematyczne.txt");
+        Set<String> themes = new HashSet<>();
+        for(Lecture lecture : lectures){
+            themes.add(lecture.getTheme());
+        }
+        for(String theme : themes){
+            int numberOfUsers = userLectureRepository.countUserLecturesByTheme(theme);
+            float percentage = ((float) numberOfUsers /numberOfReservations)*100;
+            report += (theme + ": " + percentage +"%\n");
+        }
+        fileWriter.write(report);
+        fileWriter.close();
+        return report;
     }
 }

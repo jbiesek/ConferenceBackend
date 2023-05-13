@@ -17,4 +17,8 @@ public interface UserLectureService {
     public List<Lecture> getLecturesByLogin(String login);
 
     public int cancelReservation(String login, int lecture_id);
+
+    public String generateLectureReport() throws IOException;
+
+    public String generateLectureReportByTheme() throws IOException;
 }

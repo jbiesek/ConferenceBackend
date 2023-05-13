@@ -1,0 +1,3 @@
+Backend: 40.0%
+DevOps: 36.0%
+Cyberbezpieczeństwo: 24.0%

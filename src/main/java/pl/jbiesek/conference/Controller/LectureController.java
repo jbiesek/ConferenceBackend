@@ -110,4 +110,14 @@ public class LectureController {
             return new ResponseEntity<>("Podany użytkownik nie istnieje", HttpStatus.FORBIDDEN);
         }
     }
+
+    @PostMapping("/lectures/generateLectureReport")
+    public ResponseEntity<String> generateLectureReport() throws IOException {
+        return new ResponseEntity<>(userLectureService.generateLectureReport(), HttpStatus.OK);
+    }
+
+    @PostMapping("/lectures/generateThemeReport")
+    public ResponseEntity<String> generateThemeReport() throws IOException {
+        return new ResponseEntity<>(userLectureService.generateLectureReportByTheme(), HttpStatus.OK);
+    }
 }
