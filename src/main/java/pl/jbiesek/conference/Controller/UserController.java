@@ -27,7 +27,7 @@ public class UserController {
         return userService.getById(id);
     }
 
-    @PostMapping("/user")
+    @PostMapping("/user/register")
     public ResponseEntity<String> add(@RequestBody User user) {
         int userServiceResponse = userService.add(user);
         if (userServiceResponse==0) {
@@ -41,7 +41,7 @@ public class UserController {
         } else if (userServiceResponse == 4) {
             return new ResponseEntity<>("W bazie istnieje użytkownik o podanym loginie i e-mailu.", HttpStatus.FORBIDDEN);
         } else {
-            return new ResponseEntity<>("Wpisano nieprawidłowe dane.", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Podano nieprawidłowe dane.", HttpStatus.FORBIDDEN);
         }
     }
 
@@ -74,8 +74,10 @@ public class UserController {
             return new ResponseEntity<>("Użytkownik o podanym e-mailu nie istnieje", HttpStatus.FORBIDDEN);
         } else if (serviceResponse == 3) {
             return new ResponseEntity<>("Użytkownik o podanym loginie i e-mailu nie istnieje", HttpStatus.FORBIDDEN);
-        } else {
+        } else if (serviceResponse == 4) {
             return new ResponseEntity<>("Podano nieprawidłowy adres e-mail", HttpStatus.FORBIDDEN);
+        } else {
+            return new ResponseEntity<>("Nowy e-mail nie może być taki sam jak stary e-mail.", HttpStatus.FORBIDDEN);
         }
     }
 }

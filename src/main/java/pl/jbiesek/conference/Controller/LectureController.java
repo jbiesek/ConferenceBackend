@@ -1,6 +1,5 @@
 package pl.jbiesek.conference.Controller;
 
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +10,6 @@ import pl.jbiesek.conference.Services.LectureService;
 import pl.jbiesek.conference.Services.UserLectureService;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

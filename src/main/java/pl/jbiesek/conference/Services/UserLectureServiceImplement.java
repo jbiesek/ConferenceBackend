@@ -9,7 +9,6 @@ import pl.jbiesek.conference.Respositories.LectureRepository;
 import pl.jbiesek.conference.Respositories.UserLectureRepository;
 import pl.jbiesek.conference.Respositories.UserRepository;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -45,108 +44,92 @@ public class UserLectureServiceImplement implements UserLectureService {
 
     @Override
     public int signUserIntoLecture(int lecture_id, String login, String email) throws IOException {
-        if(lectureRepository.findById(lecture_id).isPresent()) {
-            if (userLectureRepository.countUsersByLectureId(lecture_id) < 5) {
-                Optional<User> userOptional = userRepository.getUserByLoginAndEmail(login, email);
-                Lecture lecture = lectureRepository.findById(lecture_id).get();
-                if (userOptional.isPresent()) {
-                    User user = userOptional.get();
-                    if (checkForUserAndLecture(user.getId(), lecture_id)) {
-                        List<Lecture> userLectures = lectureRepository.getLecturesByUserId(user.getId());
-                        for(Lecture l : userLectures) {
-                            if(l.getDate().equals(lecture.getDate())){
-                                return 1;
-                            }
-                        }
-                        userLectureRepository.save(new UserLecture(user, lecture));
-                        FileWriter fileWriter = new FileWriter("powiadomienia.txt",true);
-                        Date date = new Date();
-                        fileWriter.write("Data: " + date + "\n");
-                        fileWriter.write("Wiadomość do: " + user.getEmail() + "\n\n");
-                        fileWriter.write("Cześć " + user.getLogin() + "!\n\n" + "Zarejestrowałeś/łaś się na prelekcję pt. "
-                                + lecture.getTitle() + " ze ścieżki tematycznej " + lecture.getTheme()
-                                + ". Prelekcja odbędzie się dnia " + DateTimeFormatter.ofPattern("dd.MM.yyyy ").format(lecture.getDate())
-                                + "o godzinie " + DateTimeFormatter.ofPattern("HH:mm").format(lecture.getDate())
-                                + ".\n\n" + "Pozdrawiamy,\n" + "Organizatorzy" + "\n\n---------------------------\n\n");
-                        fileWriter.close();
-                        return 0;
-                    } else {
-                        return 2;
-                    }
-                } else {
-                    return 3;
-                }
-            } else {
-                return 4;
-            }
-        } else {
+        if(lectureRepository.findById(lecture_id).isEmpty()) {
             return 5;
         }
+        if (userLectureRepository.countUsersByLectureId(lecture_id) >= 5) {
+            return 4;
+        }
+        Optional<User> userOptional = userRepository.getUserByLoginAndEmail(login, email);
+        Lecture lecture = lectureRepository.findById(lecture_id).get();
+        if (userOptional.isEmpty()) {
+            return 3;
+        }
+        User user = userOptional.get();
+        if (!checkForUserAndLecture(user.getId(), lecture_id)) {
+            return 2;
+        }
+        List<Lecture> userLectures = lectureRepository.getLecturesByUserId(user.getId());
+        for(Lecture l : userLectures) {
+            if(l.getDate().equals(lecture.getDate())){
+                return 1;
+            }
+        }
+        userLectureRepository.save(new UserLecture(user, lecture));
+        FileWriter fileWriter = new FileWriter("powiadomienia.txt",true);
+        Date date = new Date();
+        fileWriter.write("Data: " + date + "\n");
+        fileWriter.write("Wiadomość do: " + user.getEmail() + "\n\n");
+        fileWriter.write("Cześć " + user.getLogin() + "!\n\n" + "Zarejestrowałeś/łaś się na prelekcję pt. "
+                + lecture.getTitle() + " ze ścieżki tematycznej " + lecture.getTheme()
+                + ". Prelekcja odbędzie się dnia " + DateTimeFormatter.ofPattern("dd.MM.yyyy ").format(lecture.getDate())
+                + "o godzinie " + DateTimeFormatter.ofPattern("HH:mm").format(lecture.getDate())
+                + ".\n\n" + "Pozdrawiamy,\n" + "Organizatorzy" + "\n\n---------------------------\n\n");
+        fileWriter.close();
+        return 0;
     }
 
     @Override
     public List<Lecture> getLecturesByLogin(String login) {
-        Optional<User> userOptional = userRepository.getUserByLogin(login);
-        if(userOptional.isPresent()){
-            int user_id = userOptional.get().getId();
-            return lectureRepository.getLecturesByUserId(user_id);
-        }
-        return new ArrayList<>();
+        return lectureRepository.getLecturesByUserLogin(login);
     }
 
     @Override
     public int cancelReservation(String login, int lecture_id) {
         Optional<User> userOptional = userRepository.getUserByLogin(login);
-        if(userOptional.isPresent()) {
-            Optional<Lecture> lectureOptional = lectureRepository.findById(lecture_id);
-            if(lectureOptional.isPresent()){
-                int user_id = userOptional.get().getId();
-                if(!checkForUserAndLecture(user_id, lecture_id)) {
-                    UserLecture userLecture = userLectureRepository.getByUserAndLecture(user_id, lecture_id);
-                    userLectureRepository.deleteById(userLecture.getId());
-                    return 0;
-                } else {
-                    return 1;
-                }
-            } else {
-                return 2;
-            }
-        } else {
+        if(userOptional.isEmpty()) {
             return 3;
         }
+        Optional<Lecture> lectureOptional = lectureRepository.findById(lecture_id);
+        if(lectureOptional.isEmpty()){
+            return 2;
+        }
+        int user_id = userOptional.get().getId();
+        if(checkForUserAndLecture(user_id, lecture_id)) {
+            return 1;
+        }
+        UserLecture userLecture = userLectureRepository.getByUserAndLecture(user_id, lecture_id);
+        userLectureRepository.deleteById(userLecture.getId());
+        return 0;
     }
 
     public String generateLectureReport() throws IOException {
         List<Lecture> lectures = lectureRepository.findAll();
         int numberOfReservations = userLectureRepository.countUserLectures();
-        String report = "";
+        StringBuilder report = new StringBuilder();
         FileWriter fileWriter = new FileWriter("raport_prelekcje.txt");
         for(Lecture lecture : lectures){
             int numberOfUsers = userLectureRepository.countUsersByLectureId(lecture.getId());
             float percentage = ((float) numberOfUsers /numberOfReservations)*100;
-            report += (lecture.getTitle() + ": " + percentage +"%\n");
+            report.append(lecture.getTitle()).append(": ").append(percentage).append("%\n");
         }
-        fileWriter.write(report);
+        fileWriter.write(report.toString());
         fileWriter.close();
-        return report;
+        return report.toString();
     }
 
     public String generateLectureReportByTheme() throws IOException {
-        List<Lecture> lectures = lectureRepository.findAll();
         int numberOfReservations = userLectureRepository.countUserLectures();
-        String report = "";
+        StringBuilder report = new StringBuilder();
         FileWriter fileWriter = new FileWriter("raport_sciezki_tematyczne.txt");
-        Set<String> themes = new HashSet<>();
-        for(Lecture lecture : lectures){
-            themes.add(lecture.getTheme());
-        }
+        List<String> themes = lectureRepository.getThemesList();
         for(String theme : themes){
             int numberOfUsers = userLectureRepository.countUserLecturesByTheme(theme);
             float percentage = ((float) numberOfUsers /numberOfReservations)*100;
-            report += (theme + ": " + percentage +"%\n");
+            report.append(theme).append(": ").append(percentage).append("%\n");
         }
-        fileWriter.write(report);
+        fileWriter.write(report.toString());
         fileWriter.close();
-        return report;
+        return report.toString();
     }
 }

@@ -15,9 +15,6 @@ import pl.jbiesek.conference.Services.UserService;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -34,7 +31,7 @@ public class IndexController {
 
     @PostMapping("/generateModel")
     public ResponseEntity<Void> generateModel() {
-        List<User> users = new ArrayList<>();
+
         User u0 = new User("Jan", "jan_kowalski@gmail.com");
         User u1 = new User("Ania", "anna_malinowska@gmail.com");
         User u2 = new User("Marek", "marek_adamski@gmail.com");

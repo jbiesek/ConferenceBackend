@@ -31,30 +31,23 @@ public class UserServiceImplement implements UserService {
 
     @Override
     public int add(User user) {
-        if (user.getEmail()!=null && user.getLogin()!=null) {
-            if (userRepository.getUserByLoginAndEmail(user.getLogin(), user.getEmail()).isEmpty()) {
-                if (userRepository.getUserByEmail(user.getEmail()).isEmpty()) {
-                    if (userRepository.getUserByLogin(user.getLogin()).isEmpty()) {
-                        String pattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-                        Pattern p = java.util.regex.Pattern.compile(pattern);
-                        if (p.matcher(user.getEmail()).matches()) {
-                            userRepository.save(user);
-                            return 0;
-                        } else {
-                            return 1;
-                        }
-                    } else {
-                        return 2;
-                    }
-                } else {
-                    return 3;
-                }
-            } else {
-                return 4;
-            }
-        } else {
+        if (user.getEmail()==null || user.getLogin()==null) {
             return 5;
         }
+        if (userRepository.getUserByLoginAndEmail(user.getLogin(), user.getEmail()).isPresent()) {
+            return 4;
+        }
+        if (userRepository.getUserByEmail(user.getEmail()).isPresent()) {
+            return 3;
+        }
+        if (userRepository.getUserByLogin(user.getLogin()).isPresent()) {
+            return 2;
+        }
+        if (!emailCheck(user.getEmail())) {
+            return 1;
+        }
+        userRepository.save(user);
+        return 0;
     }
 
     @Override
@@ -94,21 +87,28 @@ public class UserServiceImplement implements UserService {
         String updatedEmail = updateEmailDto.getUpdatedEmail();
         if (userRepository.getUserByLogin(login).isEmpty()) {
             return 1;
-        } else if (userRepository.getUserByEmail(email).isEmpty()) {
-            return 2;
-        } else if (userRepository.getUserByLoginAndEmail(login, email).isEmpty()) {
-            return 3;
-        } else {
-            User userWithId = userRepository.getUserByLoginAndEmail(login, email).get();
-            String pattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-            Pattern p = java.util.regex.Pattern.compile(pattern);
-            if (p.matcher(updatedEmail).matches()) {
-                userWithId.setEmail(updatedEmail);
-                userRepository.save(userWithId);
-                return 0;
-            } else {
-                return 4;
-            }
         }
+        if (userRepository.getUserByEmail(email).isEmpty()) {
+            return 2;
+        }
+        if (userRepository.getUserByLoginAndEmail(login, email).isEmpty()) {
+            return 3;
+        }
+        User userWithId = userRepository.getUserByLoginAndEmail(login, email).get();
+        if (!emailCheck(updatedEmail)) {
+            return 4;
+        }
+        if (email.equals(updatedEmail)){
+            return 5;
+        }
+        userWithId.setEmail(updatedEmail);
+        userRepository.save(userWithId);
+        return 0;
+    }
+
+    private Boolean emailCheck(String email) {
+        String pattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        Pattern p = java.util.regex.Pattern.compile(pattern);
+        return p.matcher(email).matches();
     }
 }
