@@ -26,22 +26,24 @@ Jako Password wpisz: <pre>password</pre>
 
 ## Opis REST pointów
 
-#### Wypełnienie bazy danych przykładowymi danymi
+### Wypełnienie bazy danych przykładowymi danymi
 <pre>POST localhost:8080/api/generateModel</pre>  
 
-#### Wyświetlenie wszystkich użytkowników
+### Wyświetlenie wszystkich użytkowników
 <pre>GET localhost:8080/api/users</pre>
 
-#### Wyświetlenie użytkownika po numerze id
+### Wyświetlenie użytkownika po numerze id
 <pre>GET localhost:8080/api/user/{id}</pre>
 
-#### Rejestracja użytkownika
+### Rejestracja użytkownika
 <pre>POST localhost:8080/api/user/register</pre>
 Body:  
+```json
 {  
-&emsp;"login": "Jan",  
-&emsp;"email": "jan_kowalski@gmail.com"  
+  "login": "Jan",  
+  "email": "jan_kowalski@gmail.com"  
 }  
+```
 W przypadku poprawnego zarejestrowania system zwraca status 201 Created wraz z wiadomością:  
 <pre>Pomyśnie zarejestrowano.</pre>
 W razie niepowodzenia system zwraca status 403 Forbidden wraz z jedną z możliwych wiadomości:
@@ -51,14 +53,16 @@ W razie niepowodzenia system zwraca status 403 Forbidden wraz z jedną z możliw
 <pre>Podany login jest już zajęty.</pre>
 <pre>Podano nieprawidłowy adres e-mail.</pre>
 
-#### Zmiana adresu e-mail użytkownika
+### Zmiana adresu e-mail użytkownika
 <pre>POST localhost:8080/api/user/updateEmail</pre>
 Body:  
+```json
 {  
-&emsp;"login": "Jan",  
-&emsp;"email": "'jan_kowalski@gmail.com'",  
-&emsp;"updatedEmail": "jan_kowalski1@gmail.com"  
+  "login": "Jan",  
+  "email": "'jan_kowalski@gmail.com'",  
+  "updatedEmail": "jan_kowalski1@gmail.com"  
 }  
+```
 W przypadku poprawnej zmiany adresu e-mail system zwraca status 200 OK wraz z wiadomością:  
 <pre>Pomyślnie zmieniono adres e-mail.</pre>
 W razie niepowodzenia system zwraca status 403 Forbidden wraz z jedną z możliwych wiadomości:
@@ -70,59 +74,67 @@ W razie niepowodzenia system zwraca status 403 Forbidden wraz z jedną z możliw
 <pre>Użytkownik o podanym loginie nie istnieje.</pre>
 
 
-#### Edycja użytkownika po numerze id
+### Edycja użytkownika po numerze id
 <pre>POST localhost:8080/api/user/{id}</pre>
 Body:  
+```json
 {  
-&emsp;"login" : "Jan1",  
-&emsp;"email" : "jan_kowalski1@gmail.com"  
+  "login" : "Jan1",  
+  "email" : "jan_kowalski1@gmail.com"  
 }
+```
 
-#### Usunięcie istniejącego użytkownika po numerze id
+### Usunięcie istniejącego użytkownika po numerze id
 <pre>DELETE localhost:8080/api/user/{id}</pre>
 
-#### Wyświetlenie wszystkich prelekcji posortowanych po dacie
+### Wyświetlenie wszystkich prelekcji posortowanych po dacie
 <pre>GET localhost:8080/api/lectures/sortByDate</pre>
 
-#### Wyświetlenie wszystkich prelekcji posortowanych po ścieżce tematycznej
+### Wyświetlenie wszystkich prelekcji posortowanych po ścieżce tematycznej
 <pre>GET localhost:8080/api/lectures/sortByTheme</pre>
 
-#### Wyświetlenie prelekcji po numerze id
+### Wyświetlenie prelekcji po numerze id
 <pre>GET localhost:8080/api/lecture/{id}</pre>
 
-#### Wyświetlenie wszystkich prelekcji danego użytkownika po podaniu loginu
+### Wyświetlenie wszystkich prelekcji danego użytkownika po podaniu loginu
 <pre>GET localhost:8080/api/lectures/byLogin</pre>
 Body:  
-Jan
+<pre>Jan</pre>
 
-#### Dodanie nowej prelekcji
+### Dodanie nowej prelekcji
 <pre>POST localhost:8080/api/lecture</pre>
 Body:  
+```json
 {  
-&emsp;"title": "Podstawy Spring Boota",  
-&emsp;"theme": "Backend",   
-&emsp;"date": "2023-06-01T10:00:00+02:00"   
+  "title": "Podstawy Spring Boota",  
+  "theme": "Backend",   
+  "date": "2023-06-01T10:00:00+02:00"   
 }
+```
 
-#### Edycja istniejącej prelekcji po numerze id
+### Edycja istniejącej prelekcji po numerze id
 <pre>PUT localhost:8080/api/lecture/{id}</pre>
 Body:  
+```json
 {  
-&emsp;"title": "Podstawy Spring Boota 2",  
-&emsp;"theme": "Backend 2",   
-&emsp;"date": "2023-06-01T10:00:00+02:00"   
+  "title": "Podstawy Spring Boota 2",  
+  "theme": "Backend 2",   
+  "date": "2023-06-01T10:00:00+02:00"   
 }
+```
 
-#### Usunięcie prelekcji po numerze id
+### Usunięcie prelekcji po numerze id
 <pre>DELETE localhost:8080/api/lecture/{id}</pre>
 
-#### Zapis użytkownika na prelekcję po numerze id po podaniu loginu i hasła
+### Zapis użytkownika na prelekcję po numerze id po podaniu loginu i hasła
 <pre>POST localhost:8080/api/lecture/signIn/{id}</pre>
 Body:  
+```json
 {  
-&emsp;"login": "Jan",  
-&emsp;"email": "jan_kowalski@gmail.com"  
+  "login": "Jan",  
+  "email": "jan_kowalski@gmail.com"  
 }  
+```
 W przypadku poprawnego zapisu na prelekcję system zwraca status 200 OK wraz z wiadomością:  
 <pre>Pomyślnie dokonano zapisu.</pre>
 W razie niepowodzenia system zwraca status 403 Forbidden wraz z jedną z możliwych wiadomości:
@@ -133,11 +145,11 @@ W razie niepowodzenia system zwraca status 403 Forbidden wraz z jedną z możliw
 <pre>Podana prelekcja nie istnieje.</pre>  
 Po zarezerwowaniu miejsca w pliku <i>powiadomienia.txt</i> utworzony zostanie wpis z przykładową wiadomością e-mail do użytkownika.
 
-#### Anulowanie zapisu użytkownika na prelekcję po numerze id po podaniu loginu
+### Anulowanie zapisu użytkownika na prelekcję po numerze id po podaniu loginu
 
 <pre>POST localhost:8080/api/lecture/cancelReservation/{id}</pre>
 Body:  
-Jan  
+<pre>Jan</pre>  
 W przypadku poprawnego anulowania zapisu na prelekcję system zwraca status 200 OK wraz z wiadomością:  
 <pre>Pomyślnie anulowano rezerwację.</pre>
 W razie niepowodzenia system zwraca status 403 Forbidden wraz z jedną z możliwych wiadomości:
@@ -145,12 +157,12 @@ W razie niepowodzenia system zwraca status 403 Forbidden wraz z jedną z możliw
 <pre>Podana prelekcja nie istnieje.</pre>
 <pre>Podany użytkownik nie istnieje.</pre>
 
-#### Generowanie zestawienia wykładów według zainteresowania
+### Generowanie zestawienia wykładów według zainteresowania
 
 <pre>POST localhost:8080/api/lectures/generateLectureReport</pre>
 System zwróci status 200 OK wraz z wiadomością zawierającą zestawienie wykładów według zainteresowania. Raport zostanie również zapisany do pliku <i>raport_prelekcje.txt</i>
 
-#### Generowanie zestawienia ścieżek tematycznych według zainteresowania
+### Generowanie zestawienia ścieżek tematycznych według zainteresowania
 
 <pre>POST localhost:8080/api/lectures/generateThemeReport</pre>
 System zwróci status 200 OK wraz z wiadomością zawierającą zestawienie ścieżek tematycznych według zainteresowania. Raport zostanie również zapisany do pliku <i>raport_sciezki_tematyczne.txt</i>
