@@ -1,4 +1,4 @@
-package pl.jbiesek.conference.Dto;
+package pl.jbiesek.conference.Dtos;
 
 public class UpdateEmailDto {
 

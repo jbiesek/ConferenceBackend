@@ -1,4 +1,4 @@
-package pl.jbiesek.conference.Controller;
+package pl.jbiesek.conference.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

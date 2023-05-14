@@ -1,9 +1,9 @@
-Podstawy Spring Boota: 20.0%
-Ataki SQL injection: 8.0%
-Docker dla początkujących: 12.0%
-Zaawansowany Spring Boot: 8.0%
-Phishing: 8.0%
-Wstęp do AWS: 12.0%
-Dobre praktyki w Javie: 12.0%
-Kryptografia asymetryczna: 8.0%
-Linux dla początkujących: 12.0%
+Podstawy Spring Boota: 19,23%
+Ataki SQL injection: 7,69%
+Docker dla początkujących: 11,54%
+Zaawansowany Spring Boot: 7,69%
+Phishing: 11,54%
+Wstęp do AWS: 11,54%
+Dobre praktyki w Javie: 11,54%
+Kryptografia asymetryczna: 7,69%
+Linux dla początkujących: 11,54%

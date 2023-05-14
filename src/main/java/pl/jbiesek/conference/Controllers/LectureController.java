@@ -1,4 +1,4 @@
-package pl.jbiesek.conference.Controller;
+package pl.jbiesek.conference.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.jbiesek.conference.Entites.Lecture;
 import pl.jbiesek.conference.Entites.User;
+import pl.jbiesek.conference.Responses.MessageResponse;
 import pl.jbiesek.conference.Services.LectureService;
 import pl.jbiesek.conference.Services.UserLectureService;
 
@@ -24,7 +25,7 @@ public class LectureController {
     UserLectureService userLectureService;
 
     @GetMapping("/lectures/sortByDate")
-    public List<Lecture> getAll() {
+    public List<Lecture> getAllByDate() {
         List<Lecture> lectures = lectureService.getAll();
         lectures.sort(Comparator.comparing(Lecture::getDate));
         return lectures;
@@ -78,33 +79,21 @@ public class LectureController {
 
     @PostMapping("/lecture/signIn/{lecture_id}")
     public ResponseEntity<String> signIn (@PathVariable("lecture_id") int lecture_id, @RequestBody User user) throws IOException {
-        int serviceResponse = userLectureService.signUserIntoLecture(lecture_id, user.getLogin(), user.getEmail());
-        if(serviceResponse == 0) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else if (serviceResponse == 1) {
-            return new ResponseEntity<>("Podany użytkownik jest już zapisany na inną prelekcję o tej samej godzinie.",HttpStatus.FORBIDDEN);
-        } else if (serviceResponse == 2) {
-            return new ResponseEntity<>("Podany użytkownik jest już zapisany na podaną prelekcję.",HttpStatus.FORBIDDEN);
-        } else if (serviceResponse == 3) {
-            return new ResponseEntity<>("Podany użytkownik nie istnieje.", HttpStatus.FORBIDDEN);
-        } else if (serviceResponse == 4) {
-            return new ResponseEntity<>("Na podaną prelekcję zapisana jest maksymalna ilość osób.", HttpStatus.FORBIDDEN);
+        MessageResponse serviceResponse = userLectureService.signUserIntoLecture(lecture_id, user.getLogin(), user.getEmail());
+        if(serviceResponse.getSuccess()) {
+            return new ResponseEntity<>(serviceResponse.getMessage(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Podana prelekcja nie istnieje.", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(serviceResponse.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 
     @PostMapping("/lecture/cancelReservation/{lecture_id}")
     public ResponseEntity<String> cancelReservation(@PathVariable("lecture_id") int lecture_id, @RequestBody String login) {
-        int serviceResponse = userLectureService.cancelReservation(login, lecture_id);
-        if(serviceResponse == 0) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else if (serviceResponse == 1) {
-            return new ResponseEntity<>("Podany użytkownik nie zarezerwował miejsca na podanej prelekcji", HttpStatus.FORBIDDEN);
-        } else if (serviceResponse == 2) {
-            return new ResponseEntity<>("Podana prelekcja nie istnieje", HttpStatus.FORBIDDEN);
+        MessageResponse serviceResponse = userLectureService.cancelReservation(login, lecture_id);
+        if(serviceResponse.getSuccess()) {
+            return new ResponseEntity<>(serviceResponse.getMessage(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Podany użytkownik nie istnieje", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(serviceResponse.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 

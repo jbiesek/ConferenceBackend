@@ -2,8 +2,9 @@ package pl.jbiesek.conference.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.jbiesek.conference.Dto.UpdateEmailDto;
+import pl.jbiesek.conference.Dtos.UpdateEmailDto;
 import pl.jbiesek.conference.Entites.User;
+import pl.jbiesek.conference.Responses.MessageResponse;
 import pl.jbiesek.conference.Respositories.UserRepository;
 
 import java.util.List;
@@ -30,24 +31,24 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public int add(User user) {
-        if (user.getEmail()==null || user.getLogin()==null) {
-            return 5;
+    public MessageResponse add(User user) {
+        if (user.getEmail().isEmpty() || user.getLogin().isEmpty()) {
+            return MessageResponse.builder().message("Podano nieprawidłowe dane.").success(false).build();
         }
         if (userRepository.getUserByLoginAndEmail(user.getLogin(), user.getEmail()).isPresent()) {
-            return 4;
+            return MessageResponse.builder().message("W bazie istnieje użytkownik o podanym loginie i e-mailu.").success(false).build();
         }
         if (userRepository.getUserByEmail(user.getEmail()).isPresent()) {
-            return 3;
+            return MessageResponse.builder().message("Podany e-mail jest już zajęty.").success(false).build();
         }
         if (userRepository.getUserByLogin(user.getLogin()).isPresent()) {
-            return 2;
+            return MessageResponse.builder().message("Podany login jest już zajęty.").success(false).build();
         }
         if (!emailCheck(user.getEmail())) {
-            return 1;
+            return MessageResponse.builder().message("Podano nieprawidłowy adres e-mail.").success(false).build();
         }
         userRepository.save(user);
-        return 0;
+        return MessageResponse.builder().message("Pomyśnie zarejestrowano.").success(true).build();
     }
 
     @Override
@@ -81,34 +82,41 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public int updateEmail(UpdateEmailDto updateEmailDto) {
+    public MessageResponse updateEmail(UpdateEmailDto updateEmailDto) {
         String login = updateEmailDto.getLogin();
         String email = updateEmailDto.getEmail();
         String updatedEmail = updateEmailDto.getUpdatedEmail();
         if (userRepository.getUserByLogin(login).isEmpty()) {
-            return 1;
+            return MessageResponse.builder().message("Użytkownik o podanym loginie nie istnieje.").success(false).build();
         }
         if (userRepository.getUserByEmail(email).isEmpty()) {
-            return 2;
+            return MessageResponse.builder().message("Użytkownik o podanym e-mailu nie istnieje.").success(false).build();
         }
         if (userRepository.getUserByLoginAndEmail(login, email).isEmpty()) {
-            return 3;
+            return MessageResponse.builder().message("Użytkownik o podanym loginie i e-mailu nie istnieje.").success(false).build();
         }
         User userWithId = userRepository.getUserByLoginAndEmail(login, email).get();
         if (!emailCheck(updatedEmail)) {
-            return 4;
+            return MessageResponse.builder().message("Podano nieprawidłowy adres e-mail.").success(false).build();
         }
         if (email.equals(updatedEmail)){
-            return 5;
+            return MessageResponse.builder().message("Nowy e-mail nie może być taki sam jak stary e-mail.").success(false).build();
+        }
+        if(emailCheckIfExistsInDB(updatedEmail)) {
+            return MessageResponse.builder().message("Podany e-mail jest już zajęty").success(false).build();
         }
         userWithId.setEmail(updatedEmail);
         userRepository.save(userWithId);
-        return 0;
+        return MessageResponse.builder().message("Pomyślnie zmieniono adres e-mail.").success(true).build();
     }
 
     private Boolean emailCheck(String email) {
         String pattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         Pattern p = java.util.regex.Pattern.compile(pattern);
         return p.matcher(email).matches();
+    }
+
+    private Boolean emailCheckIfExistsInDB(String email) {
+        return userRepository.checkForEmail(email) != 0;
     }
 }
