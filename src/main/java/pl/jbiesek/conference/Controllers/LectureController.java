@@ -13,6 +13,7 @@ import pl.jbiesek.conference.Services.UserLectureService;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -39,8 +40,9 @@ public class LectureController {
     }
 
     @GetMapping("/lecture/{id}")
-    public Lecture getById(@PathVariable("id") int id) {
-        return lectureService.getById(id);
+    public ResponseEntity<Lecture> getById(@PathVariable("id") int id) {
+        Optional<Lecture> lecture = lectureService.getById(id);
+        return lecture.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/lectures/byLogin")
@@ -64,7 +66,7 @@ public class LectureController {
         if (lectureService.update(id, updatedLecture)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -73,7 +75,7 @@ public class LectureController {
         if (lectureService.delete(id)){
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

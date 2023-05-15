@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.jbiesek.conference.Dtos.UpdateEmailDto;
+import pl.jbiesek.conference.Request.UpdateEmailRequest;
 import pl.jbiesek.conference.Entites.User;
 import pl.jbiesek.conference.Responses.MessageResponse;
 import pl.jbiesek.conference.Services.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -24,8 +25,9 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public User getById(@PathVariable("id") int id) {
-        return userService.getById(id);
+    public ResponseEntity<User> getById(@PathVariable("id") int id) {
+        Optional<User> user = userService.getById(id);
+        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/user/register")
@@ -43,7 +45,7 @@ public class UserController {
         if(userService.update(id, updatedUser)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -52,13 +54,13 @@ public class UserController {
         if(userService.delete(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/user/updateEmail")
-    public ResponseEntity<String> updateEmail(@RequestBody UpdateEmailDto updateEmailDto) {
-        MessageResponse serviceResponse = userService.updateEmail(updateEmailDto);
+    public ResponseEntity<String> updateEmail(@RequestBody UpdateEmailRequest updateEmailRequest) {
+        MessageResponse serviceResponse = userService.updateEmail(updateEmailRequest);
         if(serviceResponse.getSuccess()) {
             return new ResponseEntity<>(serviceResponse.getMessage(), HttpStatus.OK);
         } else {

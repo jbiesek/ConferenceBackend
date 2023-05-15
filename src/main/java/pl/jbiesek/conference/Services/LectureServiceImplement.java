@@ -6,6 +6,7 @@ import pl.jbiesek.conference.Entites.Lecture;
 import pl.jbiesek.conference.Respositories.LectureRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LectureServiceImplement implements LectureService {
@@ -18,17 +19,13 @@ public class LectureServiceImplement implements LectureService {
     }
 
     @Override
-    public Lecture getById(int id) {
-        if(lectureRepository.findById(id).isPresent()){
-            return lectureRepository.findById(id).get();
-        } else {
-            return null;
-        }
+    public Optional<Lecture> getById(int id) {
+        return lectureRepository.findById(id);
     }
 
     @Override
     public Boolean add(Lecture lecture) {
-        if (lecture.getTitle()!=null && lecture.getTheme()!=null && lecture.getDate()!=null) {
+        if (!lecture.getTitle().isEmpty() && !lecture.getTheme().isEmpty() && lecture.getDate()!=null) {
             lectureRepository.save(lecture);
             return true;
         } else {
@@ -42,13 +39,13 @@ public class LectureServiceImplement implements LectureService {
             return false;
         }
         Lecture lecture = lectureRepository.getReferenceById(id);
-        if(updatedLecture.getTitle() != null) {
+        if(!updatedLecture.getTitle().isEmpty() && !updatedLecture.getTitle().equals(lecture.getTitle())) {
             lecture.setTitle(updatedLecture.getTitle());
         }
-        if(updatedLecture.getTheme() != null) {
+        if(!updatedLecture.getTheme().isEmpty() && !updatedLecture.getTheme().equals(lecture.getTheme())) {
             lecture.setTheme(updatedLecture.getTheme());
         }
-        if(updatedLecture.getDate() != null) {
+        if(updatedLecture.getDate() != null && !updatedLecture.getDate().equals(lecture.getDate())) {
             lecture.setDate(updatedLecture.getDate());
         }
         try {

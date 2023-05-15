@@ -2,12 +2,13 @@ package pl.jbiesek.conference.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.jbiesek.conference.Dtos.UpdateEmailDto;
+import pl.jbiesek.conference.Request.UpdateEmailRequest;
 import pl.jbiesek.conference.Entites.User;
 import pl.jbiesek.conference.Responses.MessageResponse;
 import pl.jbiesek.conference.Respositories.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -22,12 +23,8 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public User getById(int id) {
-        if (userRepository.findById(id).isPresent()) {
-            return userRepository.findById(id).get();
-        } else {
-            return null;
-        }
+    public Optional<User> getById(int id) {
+        return userRepository.findById(id);
     }
 
     @Override
@@ -57,10 +54,10 @@ public class UserServiceImplement implements UserService {
             return false;
         }
         User user = userRepository.getReferenceById(id);
-        if(updatedUser.getEmail()!=null){
+        if(!updatedUser.getEmail().isEmpty() && !updatedUser.getEmail().equals(user.getEmail())){
             user.setEmail(updatedUser.getEmail());
         }
-        if(updatedUser.getLogin()!=null){
+        if(!updatedUser.getLogin().isEmpty() && !updatedUser.getLogin().equals(user.getLogin())){
             user.setLogin(updatedUser.getLogin());
         }
         try {
@@ -82,10 +79,10 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public MessageResponse updateEmail(UpdateEmailDto updateEmailDto) {
-        String login = updateEmailDto.getLogin();
-        String email = updateEmailDto.getEmail();
-        String updatedEmail = updateEmailDto.getUpdatedEmail();
+    public MessageResponse updateEmail(UpdateEmailRequest updateEmailRequest) {
+        String login = updateEmailRequest.getLogin();
+        String email = updateEmailRequest.getEmail();
+        String updatedEmail = updateEmailRequest.getUpdatedEmail();
         if (userRepository.getUserByLogin(login).isEmpty()) {
             return MessageResponse.builder().message("Użytkownik o podanym loginie nie istnieje.").success(false).build();
         }
@@ -103,7 +100,7 @@ public class UserServiceImplement implements UserService {
             return MessageResponse.builder().message("Nowy e-mail nie może być taki sam jak stary e-mail.").success(false).build();
         }
         if(emailCheckIfExistsInDB(updatedEmail)) {
-            return MessageResponse.builder().message("Podany e-mail jest już zajęty").success(false).build();
+            return MessageResponse.builder().message("Podany e-mail jest już zajęty.").success(false).build();
         }
         userWithId.setEmail(updatedEmail);
         userRepository.save(userWithId);

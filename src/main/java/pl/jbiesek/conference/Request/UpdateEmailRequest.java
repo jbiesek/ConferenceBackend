@@ -1,6 +1,6 @@
-package pl.jbiesek.conference.Dtos;
+package pl.jbiesek.conference.Request;
 
-public class UpdateEmailDto {
+public class UpdateEmailRequest {
 
     private String login;
 
