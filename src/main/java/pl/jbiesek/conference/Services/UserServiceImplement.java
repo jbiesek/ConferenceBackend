@@ -54,7 +54,7 @@ public class UserServiceImplement implements UserService {
             return false;
         }
         User user = userRepository.getReferenceById(id);
-        if(!updatedUser.getEmail().isEmpty() && !updatedUser.getEmail().equals(user.getEmail())){
+        if(!updatedUser.getEmail().isEmpty() && !updatedUser.getEmail().equals(user.getEmail()) && emailCheck(updatedUser.getEmail())){
             user.setEmail(updatedUser.getEmail());
         }
         if(!updatedUser.getLogin().isEmpty() && !updatedUser.getLogin().equals(user.getLogin())){

@@ -23,17 +23,21 @@ ConferenceBackend to backend strony do obsługi konferencji IT. Dane zapisywane 
 Jako JDBC URL wpisz: <pre>jdbc:h2:mem:conferencedb</pre>
 Jako User Name wpisz: <pre>sa </pre> 
 Jako Password wpisz: <pre>password</pre>
+6. Aby dostać się do Swaggera otwórz przeglądarkę internetową i wejdź na adres: [localhost:8080/api/swagger/ui.html](localhost:8080/api/swagger/ui.html)
 
 ## Opis REST pointów
 
 ### Wypełnienie bazy danych przykładowymi danymi
 <pre>POST localhost:8080/api/generateModel</pre>  
+System wypełni bazę danych przykładowymi danymi i zwróci status 200 OK.
 
 ### Wyświetlenie wszystkich użytkowników
 <pre>GET localhost:8080/api/users</pre>
+System zwróci status 200 OK wraz z listą użytkowników.
 
 ### Wyświetlenie użytkownika po numerze id
 <pre>GET localhost:8080/api/user/{id}</pre>
+Jeżeli dany użytkownik istnieje system zwróci status 200 OK wraz z użytkownikiem. W przeciwnym wypadku zwrócony zostanie status 404 NOT FOUND.
 
 ### Rejestracja użytkownika
 <pre>POST localhost:8080/api/user/register</pre>
@@ -83,23 +87,31 @@ Body:
   "email" : "jan_kowalski1@gmail.com"  
 }
 ```
+Jeżeli dany użytkownik istnieje system zwróci status 200 OK. W przeciwnym wypadku zwrócony zostanie status 404 NOT FOUND.
 
 ### Usunięcie istniejącego użytkownika po numerze id
 <pre>DELETE localhost:8080/api/user/{id}</pre>
+Jeżeli dany użytkownik istnieje system zwróci status 200 OK. W przeciwnym wypadku zwrócony zostanie status 404 NOT FOUND.
+
 
 ### Wyświetlenie wszystkich prelekcji posortowanych po dacie
 <pre>GET localhost:8080/api/lectures/sortByDate</pre>
+System zwróci status 200 OK wraz z listą prelekcji posortowanych po dacie.
 
 ### Wyświetlenie wszystkich prelekcji posortowanych po ścieżce tematycznej
 <pre>GET localhost:8080/api/lectures/sortByTheme</pre>
+System zwróci status 200 OK wraz z listą prelekcji posortowanych po ścieżce tematycznej.
 
 ### Wyświetlenie prelekcji po numerze id
 <pre>GET localhost:8080/api/lecture/{id}</pre>
+Jeżeli dana prelekcja istnieje system zwróci status 200 OK wraz z prelekcją. W przeciwnym wypadku zwrócony zostanie status 404 NOT FOUND.
+
 
 ### Wyświetlenie wszystkich prelekcji danego użytkownika po podaniu loginu
 <pre>GET localhost:8080/api/lectures/byLogin</pre>
 Body:  
 <pre>Jan</pre>
+System zwróci status 200 OK wraz z listą prelekcji danego użytkownika posortowanych po dacie.
 
 ### Dodanie nowej prelekcji
 <pre>POST localhost:8080/api/lecture</pre>
@@ -111,6 +123,7 @@ Body:
   "date": "2023-06-01T10:00:00+02:00"   
 }
 ```
+W przypadku poprawnego zapisania prelekcji system zwróci status 201 CREATED. W razie niepowodzenia zwrócony zostanie status 403 FORBIDDEN.
 
 ### Edycja istniejącej prelekcji po numerze id
 <pre>PUT localhost:8080/api/lecture/{id}</pre>
@@ -122,9 +135,11 @@ Body:
   "date": "2023-06-01T10:00:00+02:00"   
 }
 ```
+Jeżeli dana prelekcja istnieje system zwróci status 200 OK. W przeciwnym wypadku zwrócony zostanie status 404 NOT FOUND.
 
 ### Usunięcie prelekcji po numerze id
 <pre>DELETE localhost:8080/api/lecture/{id}</pre>
+Jeżeli dana prelekcja istnieje system zwróci status 200 OK. W przeciwnym wypadku zwrócony zostanie status 404 NOT FOUND.
 
 ### Zapis użytkownika na prelekcję po numerze id po podaniu loginu i hasła
 <pre>POST localhost:8080/api/lecture/signIn/{id}</pre>
