@@ -23,7 +23,8 @@ ConferenceBackend to backend strony do obsługi konferencji IT. Dane zapisywane 
 Jako JDBC URL wpisz: <pre>jdbc:h2:mem:conferencedb</pre>
 Jako User Name wpisz: <pre>sa </pre> 
 Jako Password wpisz: <pre>password</pre>
-6. Aby dostać się do Swaggera otwórz przeglądarkę internetową i wejdź na adres: [localhost:8080/api/swagger/ui.html](localhost:8080/api/swagger/ui.html)
+6. Aby dostać się do Swaggera otwórz przeglądarkę internetową i wejdź na adres: 
+[localhost:8080/api/swagger/ui.html](http://localhost:8080/api/swagger/ui.html)
 
 ## Opis REST pointów
 
@@ -108,7 +109,7 @@ Jeżeli dana prelekcja istnieje system zwróci status 200 OK wraz z prelekcją. 
 
 
 ### Wyświetlenie wszystkich prelekcji danego użytkownika po podaniu loginu
-<pre>GET localhost:8080/api/lectures/byLogin</pre>
+<pre>POST localhost:8080/api/lectures/byLogin</pre>
 Body:  
 <pre>Jan</pre>
 System zwróci status 200 OK wraz z listą prelekcji danego użytkownika posortowanych po dacie.
