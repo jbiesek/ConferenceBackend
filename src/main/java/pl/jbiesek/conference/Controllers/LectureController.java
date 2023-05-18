@@ -47,7 +47,7 @@ public class LectureController {
         return lecture.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/lectures/byLogin")
+    @PostMapping("/lectures/byLogin")
     public List<Lecture> getLecturesByLogin(@RequestBody String login) {
         List<Lecture> lectures = userLectureService.getLecturesByLogin(login);
         lectures.sort(Comparator.comparing(Lecture::getDate));
