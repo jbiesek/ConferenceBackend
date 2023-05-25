@@ -1,8 +1,8 @@
-package pl.jbiesek.conference.Services;
+package pl.jbiesek.conference.services;
 
-import pl.jbiesek.conference.Entites.Lecture;
-import pl.jbiesek.conference.Entites.UserLecture;
-import pl.jbiesek.conference.Responses.MessageResponse;
+import pl.jbiesek.conference.entites.Lecture;
+import pl.jbiesek.conference.entites.UserLecture;
+import pl.jbiesek.conference.responses.MessageResponse;
 
 import java.io.IOException;
 import java.util.List;

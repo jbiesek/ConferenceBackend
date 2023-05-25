@@ -1,9 +1,8 @@
-package pl.jbiesek.conference.Services;
+package pl.jbiesek.conference.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.jbiesek.conference.Entites.Lecture;
-import pl.jbiesek.conference.Respositories.LectureRepository;
+import pl.jbiesek.conference.entites.Lecture;
+import pl.jbiesek.conference.respositories.LectureRepository;
 
 import java.util.List;
 import java.util.Optional;

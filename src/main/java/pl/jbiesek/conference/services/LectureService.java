@@ -1,6 +1,6 @@
-package pl.jbiesek.conference.Services;
+package pl.jbiesek.conference.services;
 
-import pl.jbiesek.conference.Entites.Lecture;
+import pl.jbiesek.conference.entites.Lecture;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,14 +1,13 @@
-package pl.jbiesek.conference.Services;
+package pl.jbiesek.conference.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.jbiesek.conference.Entites.Lecture;
-import pl.jbiesek.conference.Entites.User;
-import pl.jbiesek.conference.Entites.UserLecture;
-import pl.jbiesek.conference.Responses.MessageResponse;
-import pl.jbiesek.conference.Respositories.LectureRepository;
-import pl.jbiesek.conference.Respositories.UserLectureRepository;
-import pl.jbiesek.conference.Respositories.UserRepository;
+import pl.jbiesek.conference.entites.Lecture;
+import pl.jbiesek.conference.entites.User;
+import pl.jbiesek.conference.entites.UserLecture;
+import pl.jbiesek.conference.responses.MessageResponse;
+import pl.jbiesek.conference.respositories.LectureRepository;
+import pl.jbiesek.conference.respositories.UserLectureRepository;
+import pl.jbiesek.conference.respositories.UserRepository;
 
 import java.io.FileWriter;
 import java.io.IOException;

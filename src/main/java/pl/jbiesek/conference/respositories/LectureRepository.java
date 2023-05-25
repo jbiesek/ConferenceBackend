@@ -1,11 +1,13 @@
-package pl.jbiesek.conference.Respositories;
+package pl.jbiesek.conference.respositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import pl.jbiesek.conference.Entites.Lecture;
+import org.springframework.stereotype.Repository;
+import pl.jbiesek.conference.entites.Lecture;
 
 import java.util.List;
 
+@Repository
 public interface LectureRepository extends JpaRepository<Lecture, Integer> {
 
     @Query(value = "select l.* from _lecture l join _user_lecture ul on l.id = ul.lecture_id where ul.user_id=:user_id", nativeQuery = true)

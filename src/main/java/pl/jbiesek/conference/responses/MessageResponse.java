@@ -1,4 +1,4 @@
-package pl.jbiesek.conference.Responses;
+package pl.jbiesek.conference.responses;
 
 import lombok.*;
 

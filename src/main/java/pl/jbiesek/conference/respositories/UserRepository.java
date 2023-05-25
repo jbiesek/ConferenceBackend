@@ -1,12 +1,13 @@
-package pl.jbiesek.conference.Respositories;
+package pl.jbiesek.conference.respositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import pl.jbiesek.conference.Entites.User;
+import org.springframework.stereotype.Repository;
+import pl.jbiesek.conference.entites.User;
 
-import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value = "select * from _user where login=:login and email=:email", nativeQuery = true)

@@ -1,4 +1,4 @@
-package pl.jbiesek.conference.Entites;
+package pl.jbiesek.conference.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

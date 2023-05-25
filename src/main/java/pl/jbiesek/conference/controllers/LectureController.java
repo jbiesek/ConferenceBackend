@@ -1,15 +1,14 @@
-package pl.jbiesek.conference.Controllers;
+package pl.jbiesek.conference.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.jbiesek.conference.Entites.Lecture;
-import pl.jbiesek.conference.Entites.User;
-import pl.jbiesek.conference.Responses.MessageResponse;
-import pl.jbiesek.conference.Services.LectureService;
-import pl.jbiesek.conference.Services.UserLectureService;
+import pl.jbiesek.conference.entites.Lecture;
+import pl.jbiesek.conference.entites.User;
+import pl.jbiesek.conference.responses.MessageResponse;
+import pl.jbiesek.conference.services.LectureService;
+import pl.jbiesek.conference.services.UserLectureService;
 
 import java.io.IOException;
 import java.util.Comparator;

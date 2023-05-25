@@ -1,8 +1,8 @@
-package pl.jbiesek.conference.Services;
+package pl.jbiesek.conference.services;
 
-import pl.jbiesek.conference.Request.UpdateEmailRequest;
-import pl.jbiesek.conference.Entites.User;
-import pl.jbiesek.conference.Responses.MessageResponse;
+import pl.jbiesek.conference.request.UpdateEmailRequest;
+import pl.jbiesek.conference.entites.User;
+import pl.jbiesek.conference.responses.MessageResponse;
 
 import java.util.List;
 import java.util.Optional;

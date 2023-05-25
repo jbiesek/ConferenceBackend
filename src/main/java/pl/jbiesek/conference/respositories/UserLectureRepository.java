@@ -1,9 +1,11 @@
-package pl.jbiesek.conference.Respositories;
+package pl.jbiesek.conference.respositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import pl.jbiesek.conference.Entites.UserLecture;
+import org.springframework.stereotype.Repository;
+import pl.jbiesek.conference.entites.UserLecture;
 
+@Repository
 public interface UserLectureRepository extends JpaRepository<UserLecture, Integer> {
 
     @Query(value = "select count(*) from _user_lecture where lecture_id = :lecture_id", nativeQuery = true)

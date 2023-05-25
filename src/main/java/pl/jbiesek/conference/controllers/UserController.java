@@ -1,14 +1,13 @@
-package pl.jbiesek.conference.Controllers;
+package pl.jbiesek.conference.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.jbiesek.conference.Request.UpdateEmailRequest;
-import pl.jbiesek.conference.Entites.User;
-import pl.jbiesek.conference.Responses.MessageResponse;
-import pl.jbiesek.conference.Services.UserService;
+import pl.jbiesek.conference.request.UpdateEmailRequest;
+import pl.jbiesek.conference.entites.User;
+import pl.jbiesek.conference.responses.MessageResponse;
+import pl.jbiesek.conference.services.UserService;
 
 import java.util.List;
 import java.util.Optional;

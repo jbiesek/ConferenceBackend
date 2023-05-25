@@ -1,18 +1,17 @@
-package pl.jbiesek.conference.Controllers;
+package pl.jbiesek.conference.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.jbiesek.conference.Entites.Lecture;
-import pl.jbiesek.conference.Entites.User;
-import pl.jbiesek.conference.Entites.UserLecture;
-import pl.jbiesek.conference.Services.LectureService;
-import pl.jbiesek.conference.Services.UserLectureService;
-import pl.jbiesek.conference.Services.UserService;
+import pl.jbiesek.conference.entites.Lecture;
+import pl.jbiesek.conference.entites.User;
+import pl.jbiesek.conference.entites.UserLecture;
+import pl.jbiesek.conference.services.LectureService;
+import pl.jbiesek.conference.services.UserLectureService;
+import pl.jbiesek.conference.services.UserService;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
