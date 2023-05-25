@@ -22,14 +22,17 @@ import java.time.ZonedDateTime;
 @Tag(name="Index")
 public class IndexController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    LectureService lectureService;
+    private final LectureService lectureService;
 
-    @Autowired
-    UserLectureService userLectureService;
+    private final UserLectureService userLectureService;
+
+    public IndexController(UserService userService, LectureService lectureService, UserLectureService userLectureService) {
+        this.userService = userService;
+        this.lectureService = lectureService;
+        this.userLectureService = userLectureService;
+    }
 
     @PostMapping("/generateModel")
     public ResponseEntity<Void> generateModel() {

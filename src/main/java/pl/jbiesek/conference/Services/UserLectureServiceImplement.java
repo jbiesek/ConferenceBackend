@@ -19,16 +19,19 @@ import java.util.*;
 @Service
 public class UserLectureServiceImplement implements UserLectureService {
 
-    @Autowired
-    UserLectureRepository userLectureRepository;
+    private final UserLectureRepository userLectureRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    LectureRepository lectureRepository;
+    private final LectureRepository lectureRepository;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
+
+    public UserLectureServiceImplement(UserLectureRepository userLectureRepository, UserRepository userRepository, LectureRepository lectureRepository) {
+        this.userLectureRepository = userLectureRepository;
+        this.userRepository = userRepository;
+        this.lectureRepository = lectureRepository;
+    }
 
     @Override
     public List<UserLecture> getAll() {
@@ -67,14 +70,19 @@ public class UserLectureServiceImplement implements UserLectureService {
         userLectureRepository.save(new UserLecture(user, lecture));
         FileWriter fileWriter = new FileWriter("powiadomienia.txt",true);
         Date date = new Date();
-        fileWriter.write("Data: " + date + "\n");
-        fileWriter.write("Wiadomość do: " + user.getEmail() + "\n\n");
-        fileWriter.write("Cześć " + user.getLogin() + "!\n\n" + "Zarejestrowałeś/łaś się na prelekcję pt. "
-                + lecture.getTitle() + " ze ścieżki tematycznej " + lecture.getTheme()
-                + ". Prelekcja odbędzie się dnia " + DateTimeFormatter.ofPattern("dd.MM.yyyy ").format(lecture.getDate())
-                + "o godzinie " + DateTimeFormatter.ofPattern("HH:mm").format(lecture.getDate())
-                + ".\n\n" + "Pozdrawiamy,\n" + "Organizatorzy" + "\n\n---------------------------\n\n");
-        fileWriter.close();
+        try {
+            fileWriter.write("Data: " + date + "\n");
+            fileWriter.write("Wiadomość do: " + user.getEmail() + "\n\n");
+            fileWriter.write("Cześć " + user.getLogin() + "!\n\n" + "Zarejestrowałeś/łaś się na prelekcję pt. "
+                    + lecture.getTitle() + " ze ścieżki tematycznej " + lecture.getTheme()
+                    + ". Prelekcja odbędzie się dnia " + DateTimeFormatter.ofPattern("dd.MM.yyyy ").format(lecture.getDate())
+                    + "o godzinie " + DateTimeFormatter.ofPattern("HH:mm").format(lecture.getDate())
+                    + ".\n\n" + "Pozdrawiamy,\n" + "Organizatorzy" + "\n\n---------------------------\n\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            fileWriter.close();
+        }
         return MessageResponse.builder().message("Pomyślnie dokonano zapisu.").success(true).build();
     }
 
@@ -108,11 +116,10 @@ public class UserLectureServiceImplement implements UserLectureService {
         int numberOfReservations = userLectureRepository.countUserLectures();
         StringBuilder report = new StringBuilder();
         FileWriter fileWriter = new FileWriter("raport_prelekcje.txt");
-        for(Lecture lecture : lectures){
+        lectures.forEach(lecture -> {
             int numberOfUsers = userLectureRepository.countUsersByLectureId(lecture.getId());
             String percentage = df.format(((float) numberOfUsers /numberOfReservations)*100);
-            report.append(lecture.getTitle()).append(": ").append(percentage).append("%\n");
-        }
+            report.append(lecture.getTitle()).append(": ").append(percentage).append("%\n");});
         fileWriter.write(report.toString());
         fileWriter.close();
         return report.toString();
@@ -124,11 +131,11 @@ public class UserLectureServiceImplement implements UserLectureService {
         StringBuilder report = new StringBuilder();
         FileWriter fileWriter = new FileWriter("raport_sciezki_tematyczne.txt");
         List<String> themes = lectureRepository.getThemesList();
-        for(String theme : themes){
+        themes.forEach(theme -> {
             int numberOfUsers = userLectureRepository.countUserLecturesByTheme(theme);
             String percentage = df.format(((float) numberOfUsers /numberOfReservations)*100);
             report.append(theme).append(": ").append(percentage).append("%\n");
-        }
+        });
         fileWriter.write(report.toString());
         fileWriter.close();
         return report.toString();

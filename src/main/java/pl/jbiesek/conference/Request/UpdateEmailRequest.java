@@ -1,5 +1,11 @@
 package pl.jbiesek.conference.Request;
 
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class UpdateEmailRequest {
 
     private String login;
@@ -8,27 +14,4 @@ public class UpdateEmailRequest {
 
     private String updatedEmail;
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUpdatedEmail() {
-        return updatedEmail;
-    }
-
-    public void setUpdatedEmail(String updatedEmail) {
-        this.updatedEmail = updatedEmail;
-    }
 }

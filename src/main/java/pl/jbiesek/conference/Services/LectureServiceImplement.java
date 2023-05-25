@@ -10,8 +10,11 @@ import java.util.Optional;
 
 @Service
 public class LectureServiceImplement implements LectureService {
-    @Autowired
-    LectureRepository lectureRepository;
+    private final LectureRepository lectureRepository;
+
+    public LectureServiceImplement(LectureRepository lectureRepository) {
+        this.lectureRepository = lectureRepository;
+    }
 
     @Override
     public List<Lecture> getAll() {

@@ -18,8 +18,12 @@ import java.util.Optional;
 @Tag(name="User")
 public class UserController {
 
-    @Autowired
-    UserService userService;
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/users")
     public List<User> getAll() {

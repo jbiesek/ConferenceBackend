@@ -21,11 +21,15 @@ import java.util.Optional;
 @Tag(name = "Lecture")
 public class LectureController {
 
-    @Autowired
-    LectureService lectureService;
 
-    @Autowired
-    UserLectureService userLectureService;
+    private final LectureService lectureService;
+
+    private final UserLectureService userLectureService;
+
+    public LectureController(LectureService lectureService, UserLectureService userLectureService) {
+        this.lectureService = lectureService;
+        this.userLectureService = userLectureService;
+    }
 
     @GetMapping("/lectures/sortByDate")
     public List<Lecture> getAllByDate() {
